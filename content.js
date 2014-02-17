@@ -88,31 +88,56 @@ function uncheckCheckboxes()
     	}
     }
 }
+function uncheckMultSel()
+{
+	var sels = document.getElementsByTagName("select");
+    for(var i=0; i<sels.length; i++)
+    {
+    	var elem = sels[i];
+    	if(elem.attributes['multiple']=='undefined')
+    	{
+    		continue;
+    	}
+    	else
+    	{
+    		for(var j=0; j<elem.length; j++)
+    		{
+    			elem.options[j].selected=false;
+    		}
+    	}
+    }
+}
 function runScript() 
 {
 	//uncheck boxes, this handles the case when the 
 	//script is ran more than one time without page reload
 	uncheckCheckboxes();
 
+	//unselect multiple selects, this handles the case when the 
+	//script is ran more than one time without page reload
+	uncheckMultSel();
+
     console.log('working script yo');
-    //console.log(document.getElementsByTagName("input"));
+
+    //take care of input fields
     var inputs = document.getElementsByTagName("input");
     for(var i=0; i<inputs.length; i++)
     {
     	var elem = inputs[i];
+    	var eType = elem.type.toLowerCase();
 
-    	if(elem.type.toLowerCase()=="radio")
+    	if(eType=="radio")
     	{
+    		//get all the associated radio buttons
     		var subInputs = document.getElementsByName(elem.name);
-    		console.log(subInputs);
+
+    		//pick a random radio button
     		var subOption = Math.floor(randInc(0,subInputs.length-1));
-    		console.log(subOption);
 
+    		//select the radio button
     		subInputs[subOption].checked=true;
-
-    		console.log("we have "+subInputs.length+" radio options");
     	}
-    	else if(elem.type.toLowerCase()=="checkbox")
+    	else if(eType=="checkbox")
     	{
     		//35% of time check box
     		//65% of time dont check box
@@ -122,8 +147,9 @@ function runScript()
     			elem.checked = true;
     		}
     	}
-    	else if(elem.type.toLowerCase()=="hidden")
+    	else if(eType=="hidden" || eType=="submit" || eType=="button" || eType=="reset")
     	{
+    		//no need to touch hidden types
     		continue;
     	}
     	else //should be just regular input textbox
@@ -142,11 +168,71 @@ function runScript()
     			//get a biased char
     			outStr += getBiasedChar();
     		}
-    		console.log(elem.name+": stirng: "+outStr);
+    		//console.log(elem.name+": stirng: "+outStr);
     		//console.log("else input: "+elem.name);
     		elem.value=outStr;
     	}
     	//console.log(elem.name);
+    }
+
+    //take care of select fields
+    var sels = document.getElementsByTagName("select");
+    for(var i=0; i<sels.length; i++)
+    {
+    	var elem = sels[i];
+    	if(elem.attributes['multiple']=='undefined')
+    	{
+    		var opt = Math.floor(randInc(0,elem.length-1));
+    		elem.options[opt].selected=true;
+    	}
+    	else
+    	{
+    		//the selectNum is supposed to represent number of
+    		//selected options in a 'multiple' select but the loop
+    		//below might not always produce this amount of options
+    		//because the same option might be randomly selected more
+    		//than one time, but this is not much of a concern anyway
+    		//becuase it adds to the randomness
+    		var selectNum = Math.floor(randInc(1,elem.length-1));
+
+    		for(var j=0; j<selectNum; j++)
+    		{
+    			var opt = Math.floor(randInc(0,elem.length-1));
+    			elem.options[opt].selected=true;
+    		}
+    	}
+    }
+    var tarea = document.getElementsByTagName("textarea");
+    for(var i=0; i<tarea.length; i++)
+    {
+    	
+    	var elem = tarea[i];
+
+    	var maxL = elem.maxLength;
+
+    	var sent = new Array();
+    	sent[0]='The totalization of the gaze allegorizes the authentication of power.';
+    	sent[1]='Pootwattle\'s carefully researched summary of the relationship between the totalization of the gaze and the authentication of power is exceptionally resistant to summary, as befits its project.';
+    	sent[2]='The socialization of the eclectic is connected to the illusion of narrative sequence.';
+    	sent[3]='The imposition of millennial hedonism can easily be made compatible with the reinscription of difference.';
+    	sent[4]='Lorem ipsum is the bomb yo!';
+    	sent[5]='The sublimation of exchange value should suggest the logic of a radical alterity.';
+    	
+    	//unlimited number of sentences
+    	var strOut = sent[4];
+    	if(maxL==-1 || maxL>100)
+    	{
+    		strOut="";
+    		var numSen = Math.floor(randInc(1,6));
+    		for(var j=0; j<numSen; j++)
+    		{
+    			var randSen = Math.floor(randInc(0,5));
+    			strOut += sent[randSen]+" ";
+    		}
+    	}
+    	
+    	elem.value=strOut;
+    	
     }
 }
 runScript();
