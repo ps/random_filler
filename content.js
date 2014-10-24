@@ -131,6 +131,13 @@ function get_test_case(caseNum) {
     }
     return cases[caseNum];
 }
+/**
+ * Empty Select Box
+ * @param eid Element ID
+ * @param value text
+ * @param text text
+ * @author Neeraj.Singh
+ */
 function run_regex(eName, caseNum) {
     // Pattern matching
     var fPatt = /((first|middle)|[fm][\s\S]*name)/i;
@@ -184,7 +191,7 @@ function run_script()
 
     // Test case to use 
     // TODO: add ability to read this in from options
-    var caseNumber = -1;
+    var caseNumber = 0;
 
     //take care of input fields
     var inputs = document.getElementsByTagName("input");
@@ -221,8 +228,6 @@ function run_script()
     	}
     	else //should be just regular input textbox
     	{
-            //(first|^[f]*[[\s\S]name])
-            //console.log('el name:' + elem.name);
             var res = run_regex(elem.name, caseNumber);
             if (res != -1) {
                 elem.value = res;
@@ -236,17 +241,13 @@ function run_script()
     		}
     		var numC = Math.floor(rand_inc(2,maxL));
     		var outStr = "";
-    		//console.log("numCharacters["+maxL+"]:"+elem.name+" random num:"+numC);
     		for(var j=0; j<numC; j++)
     		{
     			//get a biased char
     			outStr += get_biased_char();
     		}
-    		//console.log(elem.name+": stirng: "+outStr);
-    		//console.log("else input: "+elem.name);
     		elem.value=outStr;
     	}
-    	//console.log(elem.name);
     }
 
     //take care of select fields

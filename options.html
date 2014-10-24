@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><title>My Test Extension Options</title></head>
+<head><title>Random Filler</title></head>
+<style>
+body {
+	background-color: #F7F8E0;
+}
+.case_options {
+	padding-left: 30px;
+}
+</style>
 <body>
+Random Filler Settings<br><br>
 
-Favorite color:
+Pick which type of data you would like to be inserted into your form.<br>
+<input type="radio" name="data_type" id="random_cases">Random data<br>
+<input type="radio" name="data_type" id="realistic_cases">Realistic test cases
+<div class="case_options" id="case_options">
+	Pick test case that you'd like to use:
+	<select id="test_case">
+	 <option value="0">1</option>
+	 <option value="1">2</option>
+	 <option value="2">3</option>
+	 <option value="3">4</option>
+	</select>
+</div>
+<!-- 
 <select id="color">
  <option value="red">red</option>
  <option value="green">green</option>
@@ -14,9 +35,10 @@ Favorite color:
 <label>
   <input type="checkbox" id="like">
   I like colors.
-</label>
+</label>-->
 
 <div id="status"></div>
+
 <button id="save">Save</button>
 
 <script src="options.js"></script>
