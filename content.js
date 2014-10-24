@@ -2,43 +2,43 @@ function rand(min, max) {
 	return Math.random() * (max - min) + min;
 }
 //random inclusive range
-function randInc(min, max) {
+function rand_inc(min, max) {
 	return Math.random() * ( (max - min)+1 ) + min;
 }
-function getCharCode(slot)
+function get_char_code(slot)
 {
 	switch(slot)
 	{
 	case 0:
-		return Math.floor(randInc(97,122));
+		return Math.floor(rand_inc(97,122));
 		break;
 	case 1:
-		return Math.floor(randInc(65,90));
+		return Math.floor(rand_inc(65,90));
 		break;
 	case 2:
-		return Math.floor(randInc(48,57));
+		return Math.floor(rand_inc(48,57));
 		break;
 	case 3:
 		return 32;
 		break;
 	case 4:
-		return Math.floor(randInc(33,47));
+		return Math.floor(rand_inc(33,47));
 		break;
 	case 5:
-		return Math.floor(randInc(58,64));
+		return Math.floor(rand_inc(58,64));
 		break;
 	case 6:
-		return Math.floor(randInc(91,96));
+		return Math.floor(rand_inc(91,96));
 		break;
 	case 7:
-		return Math.floor(randInc(123,126));
+		return Math.floor(rand_inc(123,126));
 		break;
 	default:
-		return Math.floor(randInc(32,126));
+		return Math.floor(rand_inc(32,126));
 		break;
 	}
 }
-function getBiasedChar()
+function get_biased_char()
 {
 	/*var rand = function(min, max) {
 		return Math.random() * (max - min) + min;
@@ -75,9 +75,9 @@ function getBiasedChar()
 			break;
 		}
 	}
-	return String.fromCharCode(getCharCode(charSel));
+	return String.fromCharCode(get_char_code(charSel));
 }
-function uncheckCheckboxes()
+function uncheck_checkboxes()
 {
 	var inputs = document.getElementsByTagName("input");
     for(var i=0; i<inputs.length; i++)
@@ -88,7 +88,7 @@ function uncheckCheckboxes()
     	}
     }
 }
-function uncheckMultSel()
+function uncheck_multsel()
 {
 	var sels = document.getElementsByTagName("select");
     for(var i=0; i<sels.length; i++)
@@ -107,17 +107,84 @@ function uncheckMultSel()
     	}
     }
 }
-function runScript() 
+function get_test_case(caseNum) {
+    var cases = [
+        ["Robert", "O'Donnel", "56 Jackson Road", "East Orange", 
+        "New Jersey", "09951", "rob.donn5_7+hey@greatdomain.com", "567-456-7898"],
+        ["Ari", "DeVitale", "11123 46 Street", "New York", 
+        "New York", "07067", "aDeViT4=e@exam.me", "5554443333"],
+        ["Ji", "Bank-Jones", "40-30 134th St.", "New Brunswick",
+        "Kentucky", "07851", "OnlyJILetters@test.hi", "567 789 0987"],
+        ["Frederick", "Rogers Matos", "61 Park Hill Terrace", "Hamilton Square", 
+        "Utah", "19956", "numbers34_5lett@ebolaisnear.me", "1 345 234 1234"],
+        ["Joe", "Rogers O'Brian", "3414 Sweet Gum Avenue", "Lakeville", 
+        "Pennsylvania", "67731", "what@is.anemail.edu", "444 234 5678"],
+        ["Tom", "Graczkowski", "200 Highway 35", "Potomoca", 
+        "Maryland", "20706", "rdgd@shorts.edu", "456-876-4567"],
+        ["Janusz", "Nowak", "566 W 133 Street", "Tucson", 
+        "Arizona", "85739", "email@email.com", "345 123 1234"]
+    ];
+
+    if (caseNum < 0 || caseNum > cases.length - 1) {
+        var caseNumber = Math.floor(rand_inc(0, cases.length - 1));
+        return cases[caseNumber];
+    }
+    return cases[caseNum];
+}
+function run_regex(eName, caseNum) {
+    // Pattern matching
+    var fPatt = /((first|middle)|[fm][\s\S]*name)/i;
+    var lPatt = /(last|[l][\s\S]*name)/i;
+    var addressPatt = /(street|address)/i;
+    var cityPatt = /city/i;
+    var statePatt = /state/i;
+    var zipPatt = /(zip|postal)/i;
+    var emailPatt = /email/i;
+    var phonePatt = /(phone|cell|mobile)/i;
+
+    var testCase = get_test_case(caseNum);
+
+    if (fPatt.test(eName)) {
+        return testCase[0];
+    }
+    else if (lPatt.test(eName)) {
+        return testCase[1];
+    }
+    else if (addressPatt.test(eName) && !emailPatt.test(eName)) {
+        return testCase[2];
+    }
+    else if (cityPatt.test(eName)) {
+        return testCase[3];
+    }
+    else if (statePatt.test(eName)) {
+        return testCase[4];
+    }
+    else if (zipPatt.test(eName)) {
+        return testCase[5];
+    }
+    else if (emailPatt.test(eName)) {
+        return testCase[6];
+    }
+    else if (phonePatt.test(eName)) {
+        return testCase[7];
+    }
+    return -1;
+}
+function run_script() 
 {
 	//uncheck boxes, this handles the case when the 
 	//script is ran more than one time without page reload
-	uncheckCheckboxes();
+	uncheck_checkboxes();
 
 	//unselect multiple selects, this handles the case when the 
 	//script is ran more than one time without page reload
-	uncheckMultSel();
+	uncheck_multsel();
 
     console.log('working script yo');
+
+    // Test case to use 
+    // TODO: add ability to read this in from options
+    var caseNumber = -1;
 
     //take care of input fields
     var inputs = document.getElementsByTagName("input");
@@ -132,7 +199,7 @@ function runScript()
     		var subInputs = document.getElementsByName(elem.name);
 
     		//pick a random radio button
-    		var subOption = Math.floor(randInc(0,subInputs.length-1));
+    		var subOption = Math.floor(rand_inc(0,subInputs.length-1));
 
     		//select the radio button
     		subInputs[subOption].checked=true;
@@ -142,7 +209,7 @@ function runScript()
     		//35% of time check box
     		//65% of time dont check box
     		var ranN = Math.floor();
-    		if(randInc(1,100)<=35)
+    		if(rand_inc(1,100)<=35)
     		{
     			elem.checked = true;
     		}
@@ -154,19 +221,26 @@ function runScript()
     	}
     	else //should be just regular input textbox
     	{
+            //(first|^[f]*[[\s\S]name])
+            //console.log('el name:' + elem.name);
+            var res = run_regex(elem.name, caseNumber);
+            if (res != -1) {
+                elem.value = res;
+                continue;
+            }
 
     		var maxL = elem.maxLength;
     		if(maxL >100)
     		{
     			maxL=100;
     		}
-    		var numC = Math.floor(randInc(2,maxL));
+    		var numC = Math.floor(rand_inc(2,maxL));
     		var outStr = "";
     		//console.log("numCharacters["+maxL+"]:"+elem.name+" random num:"+numC);
     		for(var j=0; j<numC; j++)
     		{
     			//get a biased char
-    			outStr += getBiasedChar();
+    			outStr += get_biased_char();
     		}
     		//console.log(elem.name+": stirng: "+outStr);
     		//console.log("else input: "+elem.name);
@@ -182,7 +256,7 @@ function runScript()
     	var elem = sels[i];
     	if(elem.attributes['multiple']=='undefined')
     	{
-    		var opt = Math.floor(randInc(0,elem.length-1));
+    		var opt = Math.floor(rand_inc(0,elem.length-1));
     		elem.options[opt].selected=true;
     	}
     	else
@@ -193,11 +267,11 @@ function runScript()
     		//because the same option might be randomly selected more
     		//than one time, but this is not much of a concern anyway
     		//becuase it adds to the randomness
-    		var selectNum = Math.floor(randInc(1,elem.length-1));
+    		var selectNum = Math.floor(rand_inc(1,elem.length-1));
 
     		for(var j=0; j<selectNum; j++)
     		{
-    			var opt = Math.floor(randInc(0,elem.length-1));
+    			var opt = Math.floor(rand_inc(0,elem.length-1));
     			elem.options[opt].selected=true;
     		}
     	}
@@ -223,10 +297,10 @@ function runScript()
     	if(maxL==-1 || maxL>100)
     	{
     		strOut="";
-    		var numSen = Math.floor(randInc(1,6));
+    		var numSen = Math.floor(rand_inc(1,6));
     		for(var j=0; j<numSen; j++)
     		{
-    			var randSen = Math.floor(randInc(0,5));
+    			var randSen = Math.floor(rand_inc(0,5));
     			strOut += sent[randSen]+" ";
     		}
     	}
@@ -235,4 +309,4 @@ function runScript()
     	
     }
 }
-runScript();
+run_script();
