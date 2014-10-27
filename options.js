@@ -1,11 +1,12 @@
 // Saves options to chrome.storage
 function save_options() {
-  var randomCases = document.getElementById('random_cases').checked;
+  var mixCases = document.getElementById('mix_cases').checked;
+  var randomData = document.getElementById('random_data').checked;
   var testCase = document.getElementById('test_case').value;
-  console.log("randomd "+randomCases);
-  console.log("testCase "+testCase);
+
   chrome.storage.sync.set({
-    random_cases: randomCases,
+    random_data: randomData,
+    mix_cases: mixCases,
     test_case: testCase
   }, function() {
     // Update status to let user know options were saved.
@@ -20,28 +21,37 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-  // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
-    random_cases: true,
+    random_data: true,
+    mix_cases: false,
     test_case: 1
   }, function(items) {
-    console.log("restoring");
-    console.log("randomd "+items.random_cases);
-    console.log("testCase "+items.test_case);
-    if (items.random_cases) {
-      document.getElementById('random_cases').checked = true;
+
+    if (items.random_data) {
+      document.getElementById('random_data').checked = true;
+      document.getElementById('mix_cases').checked = false;
       document.getElementById('realistic_cases').checked = false;
     } 
+    else if (items.mix_cases) {
+      document.getElementById('random_data').checked = false;
+      document.getElementById('mix_cases').checked = true;
+      document.getElementById('realistic_cases').checked = false;
+    }
     else {
-      document.getElementById('random_cases').checked = false;
+      document.getElementById('random_data').checked = false;
+      document.getElementById('mix_cases').checked = false;
       document.getElementById('realistic_cases').checked = true;
     }
-    //document.getElementById('test_case').value = items.test_case;
-    document.getElementById('test_case').options[items.test_case].selected = true;
+    document.getElementById('test_case').value = items.test_case;
+    
     var caseOpts = document.getElementById('case_options');
     var cases = get_all_test_cases();
     for (var i = 0; i < cases.length; i++) {
-      caseOpts.innerHTML = caseOpts.innerHTML + '<br>' + cases[i][0];
+      var personData = '';
+      for (var j = 0; j < 8; j++) {
+        personData += cases[i][j] + ' ';
+      }
+      caseOpts.innerHTML = caseOpts.innerHTML + '<br>#' + (i+1) + ': ' + personData;
     }
   });
 }

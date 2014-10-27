@@ -187,12 +187,6 @@ function run_script()
 	//script is ran more than one time without page reload
 	uncheck_multsel();
 
-    console.log('working script yo');
-
-    // Test case to use 
-    // TODO: add ability to read this in from options
-    var caseNumber = 0;
-
     //take care of input fields
     var inputs = document.getElementsByTagName("input");
     for(var i=0; i<inputs.length; i++)
@@ -228,10 +222,19 @@ function run_script()
     	}
     	else //should be just regular input textbox
     	{
-            var res = run_regex(elem.name, caseNumber);
-            if (res != -1) {
-                elem.value = res;
-                continue;
+            if (!RANDOM_DATA) {
+                var selNum = RETRIEVED_CASE_NUMBER;
+                if (MIX_CASES) {
+                    selNum = -1;
+                }
+                var res = run_regex(elem.name, selNum);
+
+                // if a match for the element is found, assign returned
+                // data and continue
+                if (res != -1) {
+                    elem.value = res;
+                    continue;
+                }
             }
 
     		var maxL = elem.maxLength;
