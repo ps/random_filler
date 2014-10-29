@@ -1,17 +1,21 @@
 {
-  // Required
   "manifest_version": 2,
   "name": "Random Filler",
   "version": "1.0",
   "options_page": "options.html",
-
-  // Recommended
   "description": "Simple tool that fills forms with random data or predefined edge cases.",
   "background":{
     "scripts" : ["back.js"]
   },
   "icons": {
-      "256": "icons/icon256.png"
+      "512": "icons/icon512.png",
+      "256": "icons/icon256.png",
+      "128": "icons/icon128.png",
+      "64": "icons/icon64.png",
+      "48": "icons/icon48.png",
+      "32": "icons/icon32.png",
+      "24": "icons/icon24.png",
+      "16": "icons/icon16.png"
   },
   "browser_action": {
     "default_icon" : {
