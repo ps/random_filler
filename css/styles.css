@@ -1,0 +1,44 @@
+body {
+	background-color: #F7F8E0;
+}
+.case_options {
+	padding-left: 30px;
+}
+.pick_case {
+	display: inline;
+	padding-left: 23px;
+}
+.box_border {
+	padding: 2px;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+.border_bottom {
+	border-bottom: 1px solid black;
+}
+.heading_style {
+	font-weight: bold;
+}
+.case_table {
+	border-collapse: collapse;
+}
+#status {
+	font-size: 16px;
+	color: teal;
+}
+#save {
+	margin-top: 10px;
+}
+.heading {
+	font-size: 20px;
+	color: teal;
+	margin-bottom: 20px;
+	margin-right: 20px;
+	display: inline;
+	position: relative;
+	bottom: 10px;
+}
+.icon {
+	width:40px;
+	height: 40px;
+}

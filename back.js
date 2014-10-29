@@ -1,6 +1,11 @@
+/**
+ * Background script responsible for injecting settings into
+ * the content script.
+ * 
+ * @author Pawel Szczurko
+ */
+
 chrome.browserAction.onClicked.addListener(function(tab) { 
-	//chrome.tabs.executeScript(null, {file: "content.js"});
-	
 	chrome.storage.sync.get({
 		random_data: true,
 		mix_cases: false,
@@ -14,7 +19,5 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		}, function() {
 		    chrome.tabs.executeScript(tab.id, {file: 'content.js'});
 		});    
-
 	});
-
 });

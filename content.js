@@ -1,10 +1,44 @@
+/**
+ * Content script that gets executed upon key press of the
+ * Random Filler icon. Majority of the extension logic lies here.
+ * 
+ * @author Pawel Szczurko
+ */
+
+/**
+ * Return a random number in the specified range
+ * @param min Start of range
+ * @param max End of range
+ * @returns Random number in the range
+ */
 function rand(min, max) {
 	return Math.random() * (max - min) + min;
 }
-//random inclusive range
+
+/**
+ * Return a random number in the inclusive range
+ * @param min Start of range
+ * @param max End of range
+ * @returns Random number in the inclusive range
+ */
 function rand_inc(min, max) {
 	return Math.random() * ( (max - min)+1 ) + min;
 }
+
+/**
+ * Get a random ASCII character code based on the sections as follows
+ *     0- lower case letters ascii 97-122
+ *     1- upper case letters ascii 65-90
+ *     2- numbers ascii 48-57
+ *     3- space ascii 32
+ *     4- section before numbers ascii 33-47
+ *     5- section after numbers ascii 58-64
+ *     6- section after upper case letters ascii 91-96
+ *     7- section after lower case letters ascii 123-126 
+ *     
+ * @param slot One of the specified slots
+ * @returns Random ASCII character code
+ */
 function get_char_code(slot)
 {
 	switch(slot)
@@ -38,11 +72,15 @@ function get_char_code(slot)
 		break;
 	}
 }
+
+/**
+ * Get a biased ASCII character code 
+ * @param slot One of the specified slots
+ * @returns Biased ASCII character code
+ */
 function get_biased_char()
 {
-	/*var rand = function(min, max) {
-		return Math.random() * (max - min) + min;
-	};*/
+    // Probability of each ASCII slot
 	//0- [40%] lower case letters ascii 97-122
 	//1- [39%] upper case letters ascii 65-90
 	//2- [8%] numbers ascii 48-57
@@ -77,6 +115,10 @@ function get_biased_char()
 	}
 	return String.fromCharCode(get_char_code(charSel));
 }
+
+/**
+ * Deselect all checkboxes found.
+ */
 function uncheck_checkboxes()
 {
 	var inputs = document.getElementsByTagName("input");
@@ -88,6 +130,10 @@ function uncheck_checkboxes()
     	}
     }
 }
+
+/**
+ * Deselect all multiselect dropdowns.
+ */
 function uncheck_multsel()
 {
 	var sels = document.getElementsByTagName("select");
@@ -107,8 +153,17 @@ function uncheck_multsel()
     	}
     }
 }
+
+/**
+ * Get a test case
+ * @param caseNum Number of test case to return, if out of the bounds
+ *        of the array, a random case will be returned
+ * @returns A test case
+ */
 function get_test_case(caseNum) {
     var cases = [
+        ["Pawel", "Szczukowski", "8 Plum Road", "East Brunswick", 
+        "New Jersey", "06999", "pawel@pawel.pw", "666-999-9999"],
         ["Robert", "O'Donnel", "56 Jackson Road", "East Orange", 
         "New Jersey", "09951", "rob.donn5_7+hey@greatdomain.com", "567-456-7898"],
         ["Ari", "DeVitale", "11123 46 Street", "New York", 
@@ -132,11 +187,10 @@ function get_test_case(caseNum) {
     return cases[caseNum];
 }
 /**
- * Empty Select Box
- * @param eid Element ID
- * @param value text
- * @param text text
- * @author Neeraj.Singh
+ * Runs a regular expression to determine whether a field
+ * can be filled via information from the test case.
+ * @param eName Name attribute of element
+ * @param caseNum Test case number
  */
 function run_regex(eName, caseNum) {
     // Pattern matching
@@ -177,6 +231,10 @@ function run_regex(eName, caseNum) {
     }
     return -1;
 }
+
+/**
+ * Main logic method of going through the page and filling in data
+ */
 function run_script() 
 {
 	//uncheck boxes, this handles the case when the 
@@ -308,9 +366,7 @@ function run_script()
     			strOut += sent[randSen]+" ";
     		}
     	}
-    	
     	elem.value=strOut;
-    	
     }
 }
 run_script();
