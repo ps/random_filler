@@ -194,7 +194,7 @@ function get_test_case(caseNum) {
  */
 function run_regex(eName, caseNum) {
     // Pattern matching
-    var fPatt = /((first|middle)|[fm][\s\S]*name)/i;
+    var fPatt = /((first)|[f][\s\S]*name)/i;
     var lPatt = /(last|[l][\s\S]*name)/i;
     var addressPatt = /(street|address)/i;
     var cityPatt = /city/i;
@@ -205,7 +205,7 @@ function run_regex(eName, caseNum) {
 
     var testCase = get_test_case(caseNum);
 
-    if (fPatt.test(eName)) {
+    if (fPatt.test(eName) && !lPatt.test(eName)) {
         return testCase[0];
     }
     else if (lPatt.test(eName)) {
